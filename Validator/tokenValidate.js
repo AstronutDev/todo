@@ -1,12 +1,13 @@
 const jwt = require('jsonwebtoken')
 
+require('dotenv').config
+
 module.exports = {
     checkToken: (req ,res, next) => {
         let token = req.get('authorization')
         if (token) {
             token = token.slice(7)
-            console.log('yaaa',process.env.JWT_SECRET);
-            jwt.verify(token, "C9%1911#xG", (err, decoded) => {
+            jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
                 if(err) {  
                     res.json({
                         message: 'Invalid token'

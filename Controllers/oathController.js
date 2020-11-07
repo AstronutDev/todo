@@ -3,6 +3,8 @@ const bcrypt = require('bcrypt')
 
 const db = require('../db')
 
+require('dotenv').config()
+
 module.exports = {
     oath: async (req ,res) => {
         const body = req.body
@@ -17,7 +19,7 @@ module.exports = {
             } else {
                 const oath = await bcrypt.compare(body.password, result.rows[0].password)
                 if (oath) {
-                    const token = jwt.sign({ oath: result.rows[0].id }, "C9%1911#xG", {
+                    const token = jwt.sign({ oath: result.rows[0].id }, process.env.JWT_SECRET, {
                         expiresIn: "1h"
                     })
                     res.json({
