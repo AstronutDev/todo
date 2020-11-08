@@ -1,5 +1,6 @@
 const {check, validationResult } =  require('express-validator')
 
+
 exports.userValidatorResult = (req, res, next) => {
     const errors = validationResult(req)
         if(!errors.isEmpty()) {
@@ -15,5 +16,8 @@ exports.userValidator = [
         .exists({checkNull: true})
         .not().isEmpty(),
     check('password', 'Password must be 6 or more')
-        .isLength({min: 6})
+        .isLength({min: 6}),
+    check('name', 'Name is not fill')
+        .exists({checkNull: true})
+        .not().isEmpty()
 ]

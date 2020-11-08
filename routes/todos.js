@@ -6,8 +6,6 @@ const { todoValidatorResult, todoValidator } = require('../Validator/todoValidat
 
 const { createTodo, getTodoByOwner, getTodoALL, getTodoByCompleted, getTodoById, editTodo, deleteTodo} = require('../Controllers/todoController')
 
-const db = require('../db')
-
 //Insert todo
 router.post('/',checkToken, todoValidator, todoValidatorResult, createTodo)
 

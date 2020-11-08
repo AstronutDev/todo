@@ -1,5 +1,5 @@
 const Pool = require('pg').Pool
-const connection = new Pool ({
+const pool = new Pool ({
     host: 'dev.opensource-technology.com',
     user: 'postgres',
     password: 'QS4d4UWfsZDyGTup',
@@ -7,4 +7,4 @@ const connection = new Pool ({
     port: '2345'
 })
 
-module.exports = connection
+module.exports = pool

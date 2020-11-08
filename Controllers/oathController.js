@@ -5,20 +5,21 @@ const db = require('../db')
 
 require('dotenv').config()
 
-module.exports = {
-    oath: async (req ,res) => {
-        const body = req.body
-        const sql = `
-            SELECT * FROM users
-            WHERE username = $1
-        `
+
+exports.oath = async (req ,res) => {
+    const body = req.body
+    const sql = `
+        SELECT * FROM users
+        WHERE username = $1
+    `
+    try {
         await db.query(sql, [body.username], async (err, result) => {
             if (err) {
                 console.log(err);
                 res.send(err)
             } else {
-                const oath = await bcrypt.compare(body.password, result.rows[0].password)
-                if (oath) {
+                const isMatch = await bcrypt.compare(body.password, result.rows[0].password)
+                if (isMatch) {
                     const token = jwt.sign({ oath: result.rows[0].id }, process.env.JWT_SECRET, {
                         expiresIn: "1h"
                     })
@@ -26,9 +27,15 @@ module.exports = {
                         token: token
                     })
                 } else {
-                    return res.send('err')
+                    return res.json({
+                        message:'Username or password wrong'
+                    })
                 }
             }
+        })
+    } catch (error) {
+        res.json({
+            error: error
         })
     }
 }
