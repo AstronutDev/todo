@@ -4,7 +4,7 @@ const { checkToken } = require('../Validator/tokenValidate')
 
 const { todoValidatorResult, todoValidator } = require('../Validator/todoValidator')
 
-const { createTodo, getTodoByOwner, getTodoALL, getTodoByCompleted, getTodoById, editTodo, deleteTodo} = require('../Controllers/todoController')
+const { createTodo, getTodoByOwner, getTodoALL, getTodoByCompleted, getTodoById, editTodo, deleteTodo, getTodoByCompletedALL} = require('../Controllers/todoController')
 
 //Insert todo
 router.post('/',checkToken, todoValidator, todoValidatorResult, createTodo)
@@ -17,6 +17,9 @@ router.get('/all', getTodoALL)
 
 //Show todo by completed
 router.get('/completed/:completed', checkToken, getTodoByCompleted)
+
+//Show todo by completed ALL
+router.get('/completed-noauth/:completed', getTodoByCompletedALL)
 
 //Show todo by id
 router.get('/:id', checkToken, getTodoById)

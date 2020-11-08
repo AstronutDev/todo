@@ -12,7 +12,9 @@ exports.oathValidatorResult = (req, res, next) => {
 
 exports.oathValidator = [
     check('username', 'username is not fill')
-        .exists({checkNull: true}),
+        .exists({checkNull: true})
+        .not().isEmpty(),
     check('password', 'password is not fill')
         .exists({checkNull: true})
+        .not().isEmpty()
 ]

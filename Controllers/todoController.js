@@ -7,7 +7,6 @@ exports.createTodo = async (req, res) => {
             INSERT INTO todos (todo, completed, create_by) 
             VALUES($1, $2, $3)
         `
-        console.log(!!completed);
         await db.query(sql, [todo, !!completed, req.headers.userId], (err, result) => {
             if(err) {
                 res.json({
@@ -20,7 +19,7 @@ exports.createTodo = async (req, res) => {
             }
             })
         } catch (error) {
-            res.json({
+            res.json({ 
                 error: error
             })
         }  
@@ -108,6 +107,26 @@ exports.getTodoById = async (req ,res) => {
         })
     } catch (error) {
         res.status(500).json({
+            error: error
+        })
+    }
+}
+
+exports.getTodoByCompletedALL = async(req ,res) => {
+    const { completed } = req.params
+    try {
+        const sql = `
+            SELECT * FROM todos
+        `
+        await db.query(sql, (err, result) => {
+            if (err) {
+                res.send(err)
+            } else {
+                res.json({response: result.rows})
+            }
+        })
+    } catch (error) {
+        res.json({
             error: error
         })
     }

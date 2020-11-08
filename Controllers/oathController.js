@@ -18,18 +18,24 @@ exports.oath = async (req ,res) => {
                 console.log(err);
                 res.send(err)
             } else {
-                const isMatch = await bcrypt.compare(body.password, result.rows[0].password)
-                if (isMatch) {
-                    const token = jwt.sign({ oath: result.rows[0].id }, process.env.JWT_SECRET, {
-                        expiresIn: "1h"
-                    })
+                if (result.rows.length == 0) {
                     res.json({
-                        token: token
+                        error: 'user not found'
                     })
                 } else {
-                    return res.json({
-                        message:'Username or password wrong'
-                    })
+                    const isMatch = await bcrypt.compare(body.password, result.rows[0].password)
+                    if (isMatch) {
+                        const token = jwt.sign({ oath: result.rows[0].id }, process.env.JWT_SECRET, {
+                            expiresIn: "1h"
+                        })
+                        res.json({
+                            token: token
+                        })
+                    } else {
+                        return res.json({
+                            message:'Username or password wrong'
+                        })
+                    }
                 }
             }
         })
